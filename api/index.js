@@ -1,17 +1,20 @@
-const QRCode = require("qrcode");
-
-module.exports = async (req, res) => {
-  const { amount = "100", order = "ORD123", name = "Gustavo" } = req.query;
-
-  const qrText = `Pago de ${amount} BOB para el pedido ${order} de ${name}`;
-
-  try {
-    const qrImage = await QRCode.toDataURL(qrText);
-    const img = Buffer.from(qrImage.split(",")[1], "base64");
-
-    res.setHeader("Content-Type", "image/png");
-    res.send(img);
-  } catch (err) {
-    res.status(500).send("Error generando el código QR");
-  }
-};
+// Este endpoint sirve el JavaScript que inyectaremos en Shopify
+app.get('/loader.js', (req, res) => {
+    const orderId = req.query.order_id || 'UNKNOWN';
+  
+    // Genera QR apuntando a tu backend con el ID real del pedido
+    const qrUrl = `https://hanon-qr.vercel.app/api?order_id=${orderId}`;
+  
+    res.setHeader('Content-Type', 'application/javascript');
+    res.send(`
+      (function() {
+        const qr = document.createElement('img');
+        qr.src = '${qrUrl}';
+        qr.style.maxWidth = '300px';
+        qr.style.margin = '20px auto';
+        qr.style.display = 'block';
+        document.body.appendChild(qr);
+      })();
+    `);
+  });
+  
