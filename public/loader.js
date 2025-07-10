@@ -1,17 +1,12 @@
-window.addEventListener("DOMContentLoaded", function () {
-    const orderNumber = Shopify.checkout.order_id;
-    const customerName = Shopify.checkout.customer.first_name;
-    const total = Shopify.checkout.total_price;
+window.addEventListener("DOMContentLoaded", () => {
+    const amount = 189.90;
+    const order = "ABC123";
+    const name = "Gustavo";
   
-    const url = `https://hanon-qr.vercel.app/api?amount=${total}&order=${orderNumber}&name=${customerName}`;
+    const img = document.createElement("img");
+    img.src = `https://TUAPP.vercel.app/api?amount=${amount}&order=${order}&name=${name}`;
+    img.style = "display:block;margin:40px auto;width:250px";
   
-    const iframe = document.createElement("iframe");
-    iframe.src = url;
-    iframe.style = "width:300px;height:300px;border:none;margin-top:20px;";
-  
-    const container = document.querySelector(".os-order-number"); // donde insertar
-    if (container) {
-      container.parentNode.insertBefore(iframe, container.nextSibling);
-    }
+    document.body.appendChild(img);
   });
   

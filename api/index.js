@@ -1,31 +1,17 @@
-import path from "path";
-import { fileURLToPath } from "url";
-import { renderFile } from "ejs";
+const QRCode = require("qrcode");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+module.exports = async (req, res) => {
+  const { amount = "100", order = "ORD123", name = "Gustavo" } = req.query;
 
-export default async function handler(req, res) {
+  const qrText = `Pago de ${amount} BOB para el pedido ${order} de ${name}`;
+
   try {
-    const { amount = 0, order = "ABC123", name = "Cliente" } = req.query;
-    const amountFormatted = parseFloat(amount).toFixed(2);
-    const qrData = `https://hanon.io/pagar?monto=${amountFormatted}`;
+    const qrImage = await QRCode.toDataURL(qrText);
+    const img = Buffer.from(qrImage.split(",")[1], "base64");
 
-    const viewPath = path.join(__dirname, "../views/index.ejs");
-
-    renderFile(
-      viewPath,
-      { qrData, amount: amountFormatted, order, name },
-      (err, html) => {
-        if (err) {
-          res.status(500).send("Error rendering EJS: " + err.toString());
-        } else {
-          res.setHeader("Content-Type", "text/html");
-          res.status(200).send(html);
-        }
-      }
-    );
+    res.setHeader("Content-Type", "image/png");
+    res.send(img);
   } catch (err) {
-    res.status(500).send("Server Error: " + err.toString());
+    res.status(500).send("Error generando el código QR");
   }
-}
+};
