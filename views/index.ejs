@@ -1,63 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8" />
-  <title>Pagar Bs <%= montoBOB %></title>
-  <script src="/qrcode.min.js"></script>
-  <style>
-    body {
-      font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      padding: 30px;
-    }
-    #qrcode {
-      margin: 20px;
-    }
-    .info {
-      text-align: center;
-    }
-    .bold {
-      font-weight: bold;
-      font-size: 1.5em;
-      margin-bottom: 10px;
-    }
-    .copy-btn {
-      margin-top: 10px;
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-  </style>
-</head>
-<body>
-  <div class="info">
-    <div class="bold">💸 Pagar Bs <%= montoBOB %></div>
+  <head>
+    <title>Pago QR</title>
+    <script src="/qrcode.min.js"></script>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        padding: 30px;
+      }
+      #qrcode {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="qrcode"></div>
+    <h2>💸 Pagar Bs <%= amount %></h2>
     <p>Orden: <%= order %></p>
-    <p>Nombre: <%= nombre || 'Cliente' %></p>
-  </div>
+    <p>Nombre: <%= name %></p>
 
-  <div id="qrcode"></div>
-
-  <button class="copy-btn" onclick="copyText()">Copiar monto</button>
-
-  <script>
-    const qr = new QRCode(document.getElementById("qrcode"), {
-      text: "<%= qrLink %>",
-      width: 256,
-      height: 256
-    });
-
-    function copyText() {
-      navigator.clipboard.writeText("<%= montoBOB %>").then(() => {
-        alert("Monto copiado: Bs <%= montoBOB %>");
+    <script>
+      new QRCode(document.getElementById("qrcode"), {
+        text: "<%= qrData %>",
+        width: 256,
+        height: 256
       });
-    }
-  </script>
-</body>
+    </script>
+  </body>
 </html>
