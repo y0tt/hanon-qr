@@ -1,31 +1,20 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Pago QR</title>
-    <script src="/qrcode.min.js"></script>
-    <style>
-      body {
-        font-family: sans-serif;
-        text-align: center;
-        padding: 30px;
-      }
-      #qrcode {
-        margin-bottom: 20px;
-      }
-    </style>
-  </head>
-  <body>
+<head>
+  <title>Pago QR</title>
+  <script src="/qrcode.min.js"></script>
+</head>
+<body>
+  <div style="display: flex; align-items: center;">
     <div id="qrcode"></div>
-    <h2>💸 Pagar Bs <%= amount %></h2>
-    <p>Orden: <%= order %></p>
-    <p>Nombre: <%= name %></p>
-
-    <script>
-      new QRCode(document.getElementById("qrcode"), {
-        text: "<%= qrData %>",
-        width: 256,
-        height: 256
-      });
-    </script>
-  </body>
+    <div style="margin-left: 20px;">
+      <h2>💸 Pagar Bs <%= amount %></h2>
+      <p>Orden: <%= order %></p>
+      <p>Nombre: <%= name %></p>
+    </div>
+  </div>
+  <script>
+    new QRCode(document.getElementById("qrcode"), "<%= qrData %>");
+  </script>
+</body>
 </html>
